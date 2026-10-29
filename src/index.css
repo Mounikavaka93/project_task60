@@ -1,0 +1,251 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    overflow-x: clip;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  ::selection {
+    background: #6a4b2c;
+    color: #f7f4ee;
+  }
+
+  :focus-visible {
+    outline: 2px solid #6a4b2c;
+    outline-offset: 3px;
+  }
+
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer components {
+  .page-wrap {
+    @apply mx-auto w-full max-w-[1440px] px-4 sm:px-6 md:px-10 lg:px-14;
+  }
+
+  .section {
+    @apply py-16 md:py-24 lg:py-28;
+  }
+
+  .kicker {
+    @apply text-[0.72rem] font-medium uppercase tracking-[0.28em] text-bronze;
+  }
+
+  .display {
+    @apply font-serif font-medium leading-[0.96] tracking-[-0.03em];
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-[0.74rem] font-medium uppercase tracking-[0.18em] transition duration-300 disabled:cursor-wait disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply btn bg-ink text-ivory hover:bg-bronze;
+  }
+
+  .btn-line {
+    @apply btn border border-ink/20 text-ink hover:border-ink hover:bg-ink hover:text-ivory;
+  }
+
+  .btn-light {
+    @apply btn bg-ivory text-ink hover:bg-mist;
+  }
+
+  .btn-line-light {
+    @apply btn border border-ivory/40 text-ivory hover:bg-ivory hover:text-ink;
+  }
+}
+
+.rise {
+  animation: rise 0.8s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  animation: marquee 36s linear infinite;
+}
+
+.lift {
+  transition: transform 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(28, 25, 21, 0.08);
+}
+
+.rail-scene {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+  cursor: grab;
+  perspective: 1600px;
+  touch-action: pan-y;
+}
+
+.rail-scene:active {
+  cursor: grabbing;
+}
+
+.rail-ring {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(168px, 42vw);
+  height: min(250px, 58vw);
+  transform-style: preserve-3d;
+  translate: -50% -50%;
+}
+
+.rail-card {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background: #e7dfd3;
+  box-shadow: 0 22px 40px rgba(28, 25, 21, 0.22);
+  backface-visibility: hidden;
+}
+
+.rail-card span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 2.2rem 0.8rem 0.75rem;
+  background: linear-gradient(transparent, rgba(28, 25, 21, 0.78));
+  color: #f7f4ee;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.rail-floor {
+  position: absolute;
+  right: 12%;
+  bottom: 28px;
+  left: 12%;
+  height: 70px;
+  background: radial-gradient(ellipse at center, rgba(28, 25, 21, 0.2), transparent 70%);
+}
+
+.page-enter {
+  animation: page-enter 0.65s ease both;
+}
+
+.card-float {
+  transform: translateZ(42px);
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px) rotateX(7deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-bg {
+  transform: scale(1.05);
+  animation: hero-drift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes hero-drift {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 768px) {
+  .rail-scene {
+    height: 500px;
+  }
+
+  .rail-ring {
+    width: 200px;
+    height: 290px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rail-scene {
+    height: 560px;
+  }
+
+  .rail-ring {
+    width: 220px;
+    height: 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rise,
+  .marquee-track,
+  .page-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero-bg {
+    animation: none !important;
+    transform: scale(1.05) !important;
+  }
+
+  .lift,
+  .lift:hover {
+    transition: none;
+    transform: none;
+    box-shadow: none;
+  }
+}
